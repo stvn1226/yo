@@ -150,11 +150,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 998324044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3393d44adb6a0b4cb3397b6e8abd253, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a59bc7055bd5f647bca5824857dd2a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
-  speed: 0.1
+  hp: 10
+  speed: 0.03
   playerCanPass: 1
 --- !u!212 &998324046
 SpriteRenderer:
