@@ -4,9 +4,30 @@ using UnityEngine;
 
 public class Player : Character
 {
-	public bool playerCanPass = true; //if forwhatever reason we don't want the player to proceed
+	public bool playerCanPass = true,isInAction; //if forwhatever reason we don't want the player to proceed
 	[SerializeField]
-	float cameraSpeed=.1f;
+	GameObject yoTarget;
+	[SerializeField]
+	float cameraSpeed=.1f, yoWind=10f, yoWindDec =.01f, attackOffset =1f, windSpeed = .01f, maxWind = 100;
+	void decrementWind(){
+		yoWind -= yoWindDec;
+		isInAction = false;
+	}
+	void windYoYo(){
+		yoWind++;
+	}
+	void baseAttack(){
+		if(yoTarget==null){
+			yoTarget = this.gameObject.transform.GetChild(0).gameObject;
+		}
+		if(yoWind>=.1f){
+			yoTarget.transform.position = transform.position + attackOffset*Vector3.right;
+			isInAction = true;
+			}
+		else{
+			yoTarget.transform.position = transform.position;
+		}
+	}
 	override public   Vector2 move(){
 		float y = Input.GetAxis("Vertical");
 		float x = Input.GetAxis("Horizontal");
@@ -27,12 +48,34 @@ public class Player : Character
 			Camera.main.transform.position = new Vector3(Camera.main.transform.position.x+cameraSpeed,0,Camera.main.transform.position.z);
 		}
          return true;      // we're inside our safe frame.
-     }		
+     }
+	void FixedUpdate(){
+	}
     // Update is called once per frame
     void Update(){
+		if (Input.GetKey(KeyCode.F)){
+			baseAttack();
+			decrementWind();
+			isInAction = true;
+		}
+		else if (Input.GetKey(KeyCode.R)){
+			windYoYo();
+			isInAction = true;
+		}
+		else{
+			isInAction = false;
+			if(yoTarget !=null){
+				yoTarget.transform.position = transform.position;
+			}
+		}
+		if(yoWind>maxWind){
+			yoWind = maxWind;
+		}
+
 		Vector2 newPos = move();
 		if(SafeFrameCheck(newPos)){
-			transform.position = move();
+			if(!isInAction)
+				transform.position = move();
 			Debug.Log("GOOD");
 		}
 		else{
@@ -40,4 +83,5 @@ public class Player : Character
 		}
         
     }
+
 }
