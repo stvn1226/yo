@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : Character
 {
 	public bool playerCanPass = true; //if forwhatever reason we don't want the player to proceed
+	[SerializeField]
+	float cameraSpeed=.1f;
 	override public   Vector2 move(){
 		float y = Input.GetAxis("Vertical");
 		float x = Input.GetAxis("Horizontal");
@@ -22,7 +24,7 @@ public class Player : Character
          if(ratio_y < 0f||ratio_y>=.99f ||ratio_x<0f||(!playerCanPass&&ratio_x>.99f)) // if we're below our safe frame
              return false;
 		else if((playerCanPass&&ratio_x>.99f)){
-			Debug.Log("inform the camera");
+			Camera.main.transform.position = new Vector3(Camera.main.transform.position.x+cameraSpeed,0,Camera.main.transform.position.z);
 		}
          return true;      // we're inside our safe frame.
      }		
